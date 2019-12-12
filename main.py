@@ -31,26 +31,27 @@ def replace_format(file_path):
 
 
 def replace_name(file_path):
-    extension = input('please insert the extension of the files you wish to replace in format ".extension", if you wish to change all files in folder, leave this blank')
-    extension = extension.lower()
     new_name = input('please insert the new name for your files')
+    specific_extension = input('please select the extension you want to rename, if you wish to rename all the files (including folders) leave blank')
     counter = 0
-    if not extension:
-        for filename in os.listdir(file_path):
-            dst = new_name + str(counter)
-            src = file_path + filename
-            dst = file_path + dst
-            os.rename(src, dst)
-            counter += 1
-    if extension:
+    if specific_extension:
         for filename in os.listdir(file_path):
             filename = filename.lower()
-            if filename == ("\Z" + extension):
-                dst = new_name + str(counter)
+            filename_w_path, extension = os.path.splitext((file_path+filename))
+            if specific_extension == extension:
+                dst = new_name + (str(counter)) + extension
                 src = file_path + filename
-                dst = file_path + dst + extension
-                os.rename(src, dst)
+                dst = file_path + dst
                 counter += 1
+                os.rename(src, dst)
+    elif not specific_extension:
+        for filename in os.listdir(file_path):
+            filename_w_path, extension = os.path.splitext((file_path+filename))
+            dst = new_name+(str(counter))+extension
+            src = file_path + filename
+            dst = file_path + dst
+            counter += 1
+            os.rename(src, dst)
 
 
 if __name__ == '__main__':
