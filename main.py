@@ -7,11 +7,16 @@ class WrongFormatError(Exception):
     pass
 
 
+class EmptyEntryError(Exception):
+    """The entry was empty"""
+    pass
+
+
 def check_format_error(new_extension, specific_extension):
-    if (new_extension.startswith('.') or new_extension == '') and (specific_extension.startswith('.') or specific_extension == ''):
-        return False
-    else:
+    if (new_extension == '' or not new_extension.startswith('.')) and (not specific_extension == '' or not specific_extension.startswith('.')):
         return True
+    else:
+        return False
 
 
 def replace_name(file_path, new_name, specific_extension, exclude_folder, only_folder):
@@ -169,11 +174,12 @@ class MyFrame(wx.Frame):
         try:
             if not os.path.isdir(folder_selector):
                 raise FileNotFoundError
-            replace_name(folder_selector, new_name, specific_extension, exclude_folder, only_folder)
-
-            if check_format_error(new_extension, specific_extension):
-                raise WrongFormatError
-            if old_extension:
+            if new_name == '' and old_extension == '':
+                raise EmptyEntryError
+            else:
+                replace_name(folder_selector, new_name, specific_extension, exclude_folder, only_folder)
+                if check_format_error(new_extension, specific_extension):
+                    raise WrongFormatError
                 replace_format(folder_selector, old_extension, new_extension)
         except FileNotFoundError:
             file_path_error = wx.MessageDialog(self, "Error, directory unknown", "Error!", wx.OK)
@@ -181,6 +187,9 @@ class MyFrame(wx.Frame):
         except WrongFormatError:
             wrong_format_error = wx.MessageDialog(self, "Error, incorrect extension format", "Error!", wx.OK)
             wrong_format_error.ShowModal()
+        except EmptyEntryError:
+            empty_entry_error = wx.MessageDialog(self, "Error, enter a name or a correct extension to change")
+            empty_entry_error.ShowModal()
         else:
             success_message = wx.MessageDialog(self, "Success!", "Finished", wx.OK)
             success_message.ShowModal()
