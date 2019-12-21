@@ -1,6 +1,6 @@
 import os
 import wx
-
+import sys
 
 class WrongFormatError(Exception):
     """The String input is not a correct extension format"""
@@ -199,7 +199,7 @@ class MyFrame(wx.Frame):
             success_message.ShowModal()
 
     def on_cancel(self, event):
-        exit()
+        sys.exit()
 
     def on_dot_start(self, event):
         self.new_extension_text_box.Disable()
