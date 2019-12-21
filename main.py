@@ -73,7 +73,7 @@ def replace_format(file_path, old_extension, new_extension):
 
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='Hello World')
+        super().__init__(parent=None, title='Name/Format Changer')
         # Add can take up to 5 arguments:
         # window(the widget), proportion, flag, border and userData(not used often)
         # assigning the panel to the frame so it has the right color
