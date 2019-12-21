@@ -12,8 +12,11 @@ class EmptyEntryError(Exception):
     pass
 
 
-def check_format_error(new_extension, specific_extension):
-    if (new_extension == '' or not new_extension.startswith('.')) and (not specific_extension == '' or not specific_extension.startswith('.')):
+def check_format_error(new_extension, specific_extension, new_name_checker):
+    if new_name_checker.IsEnabled() and (new_extension == '' or not new_extension.startswith('.')):
+        return True
+    if not specific_extension == '' and not specific_extension.startswith('.'):
+        print('noooo')
         return True
     else:
         return False
@@ -165,6 +168,7 @@ class MyFrame(wx.Frame):
     def on_ok(self, event):
         folder_selector = self.folder_selector.GetPath()
         new_name = self.new_name_text_box.GetValue()
+        new_name_checker = self.new_extension_text_box
         new_extension = self.new_extension_text_box.GetValue()
         old_extension = self.old_extension_text_box.GetValue()
         specific_extension = self.specific_extension.GetValue()
@@ -178,7 +182,7 @@ class MyFrame(wx.Frame):
                 raise EmptyEntryError
             else:
                 replace_name(folder_selector, new_name, specific_extension, exclude_folder, only_folder)
-                if check_format_error(new_extension, specific_extension):
+                if check_format_error(new_extension, specific_extension, new_name_checker):
                     raise WrongFormatError
                 replace_format(folder_selector, old_extension, new_extension)
         except FileNotFoundError:
@@ -202,6 +206,8 @@ class MyFrame(wx.Frame):
         check_if_dot = self.old_extension_text_box.GetValue()
         if check_if_dot.startswith('.'):
             self.new_extension_text_box.Enable()
+        if not check_if_dot.startswith('.'):
+            self.new_extension_text_box.SetLabel('')
 
     def except_folders_checked(self, event):
         only_folder_checkbox = self.only_folders_button
@@ -213,6 +219,7 @@ class MyFrame(wx.Frame):
         except_folder_checkbox = self.exclude_folders_button
         except_folder_checkbox.SetValue(False)
         specific_extension_text = self.specific_extension
+        specific_extension_text.SetLabel('')
         specific_extension_text.Disable()
 
 
