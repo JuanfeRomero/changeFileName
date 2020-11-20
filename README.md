@@ -23,4 +23,4 @@ This program consist of **3** key elemnts:
    * Here you can change specific formats, just need to type a correct format and if it is in the selected folder it will change all the files with that extension to the new designated extension
    
 #### Free of use
-Please feel free to use this software freely and modify it if you see the need, I would love to have some feedback if you use it, just contact me through here or send me a tweet to @Alphacode0
+Please feel free to use this software freely and modify it if you see the need, I would love to have some feedback if you use it, just contact me through here or send me a tweet to @romero_juanfe
